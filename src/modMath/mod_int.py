@@ -1,6 +1,8 @@
 from __future__ import annotations
 from .exceptions import InvalidModError, InvalidModOperationError, InvalidTypeOperationError, InvalidInverseError
+from functools import total_ordering
 
+@total_ordering
 class ModInt:
     def __init__(self, value: int, mod: int) -> None:
         if mod <= 1:
@@ -96,11 +98,15 @@ class ModInt:
         return ModInt(other, self.mod) * self.inverse()
 
     def __eq__(self, other: object) -> bool:
-        if isinstance(other, ModInt):
-            return (self.value == other.value) and (self.mod == other.mod)
-        return False
+        if not isinstance(other, ModInt):
+            return NotImplemented
+        return (self.value == other.value) and (self.mod == other.mod)
 
     def __hash__(self) -> int:
         return hash((self.value, self.mod))
 
+
+    def __lt__(self, other: "ModInt" | int) -> bool:
+        value = self._check_value(other)
+        return self.value < value
     
