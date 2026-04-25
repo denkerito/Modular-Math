@@ -98,9 +98,11 @@ class ModInt:
         return ModInt(other, self.mod) * self.inverse()
 
     def __eq__(self, other: object) -> bool:
-        if not isinstance(other, ModInt):
-            return NotImplemented
-        return (self.value == other.value) and (self.mod == other.mod)
+        if isinstance(other, ModInt):
+            return (self.value == other.value) and (self.mod == other.mod)
+        if isinstance(other, int):
+            return self.value == (other % self.mod)
+        return NotImplemented
 
     def __hash__(self) -> int:
         return hash((self.value, self.mod))
