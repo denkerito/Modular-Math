@@ -196,3 +196,57 @@ def test_truediv_invalid():
     
     with pytest.raises(InvalidInverseError):
         m1 / 2
+
+def test_equality():
+    m1 = ModInt(5, 7)
+    m2 = ModInt(5, 7)
+    m3 = ModInt(3, 7)
+    m4 = ModInt(5, 8)
+    
+    assert m1 == m2
+    assert m1 != m3
+    assert m1 != m4
+    assert m1 != "string"
+
+def test_hash():
+    m1 = ModInt(5, 7)
+    m2 = ModInt(5, 7)
+    m3 = ModInt(3, 7)
+    
+    assert hash(m1) == hash(m2)
+    assert hash(m1) != hash(m3)
+    
+    # Test as dictionary key
+    d = {m1: "value"}
+    assert d[m2] == "value"
+
+def test_comparison():
+    m1 = ModInt(2, 7)
+    m2 = ModInt(5, 7)
+    m3 = ModInt(2, 7)
+    
+    assert m1 < m2
+    assert m1 <= m2
+    assert m1 <= m3
+    assert m2 > m1
+    assert m2 >= m1
+    assert m1 >= m3
+    
+    # Test with int
+    assert m1 < 5
+    assert m1 <= 5
+    assert m1 <= 2
+    assert m2 > 2
+    assert m2 >= 2
+    assert m1 >= 2
+
+def test_comparison_invalid_mod():
+    m1 = ModInt(2, 7)
+    m2 = ModInt(5, 8)
+    with pytest.raises(InvalidModOperationError):
+        m1 < m2
+
+def test_comparison_invalid_type():
+    m1 = ModInt(2, 7)
+    with pytest.raises(InvalidTypeOperationError):
+        m1 < "string"
