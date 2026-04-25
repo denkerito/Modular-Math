@@ -159,3 +159,40 @@ def test_egcd():
     g, x, y = Mod_int.egcd(101, 10)
     assert g == 1
     assert 101 * x + 10 * y == 1
+
+def test_truediv():
+    m1 = Mod_int(6, 7)
+    m2 = Mod_int(2, 7)
+    res = m1 / m2
+    assert res.value == 3
+    assert res.mod == 7
+    
+    m3 = Mod_int(3, 7)
+    res = m1 / m3
+    assert res.value == 2
+    assert res.mod == 7
+
+def test_truediv_int():
+    m1 = Mod_int(6, 7)
+    res = m1 / 2
+    assert res.value == 3
+    assert res.mod == 7
+    
+    res = m1 / 3
+    assert res.value == 2
+    assert res.mod == 7
+
+def test_rtruediv_int():
+    m = Mod_int(2, 7)
+    res = 6 / m
+    assert res.value == 3
+    assert res.mod == 7
+
+def test_truediv_invalid():
+    m1 = Mod_int(6, 8)
+    m2 = Mod_int(2, 8)
+    with pytest.raises(InvalidInverseError):
+        m1 / m2
+    
+    with pytest.raises(InvalidInverseError):
+        m1 / 2
