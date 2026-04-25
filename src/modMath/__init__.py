@@ -1,3 +1,3 @@
-from .mod_int import Mod_int
+from .mod_int import ModInt
 
-__all__ = ["Mod_int"]
+__all__ = ["ModInt"]

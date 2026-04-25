@@ -1,7 +1,7 @@
 from __future__ import annotations
-from .Exceptions import InvalidModError, InvalidModOperationError, InvalidTypeOperationError, InvalidInverseError
+from .exceptions import InvalidModError, InvalidModOperationError, InvalidTypeOperationError, InvalidInverseError
 
-class Mod_int:
+class ModInt:
     def __init__(self, value: int, mod: int) -> None:
         if mod <= 1:
             raise InvalidModError(f"Modulus must be greater than 1, got {mod}")
@@ -11,8 +11,8 @@ class Mod_int:
     def __str__(self) -> str:
         return f"({self.value} % {self.mod})"
 
-    def _check_value(self, other: "Mod_int" | int) -> int:
-        if isinstance(other, Mod_int):
+    def _check_value(self, other: "ModInt" | int) -> int:
+        if isinstance(other, ModInt):
             if self.mod != other.mod:
                 raise InvalidModOperationError(f"Modulus must be the same, got {self.mod} and {other.mod}")
             return other.value
@@ -20,33 +20,33 @@ class Mod_int:
             return other % self.mod
         raise InvalidTypeOperationError(f"Invalid value, got {type(other)}")
 
-    def __add__(self, other: "Mod_int" | int) -> "Mod_int":
+    def __add__(self, other: "ModInt" | int) -> "ModInt":
         value = self._check_value(other)
-        return Mod_int((self.value + value) % self.mod, self.mod)
-    def __radd__(self, other: "Mod_int" | int) -> "Mod_int":
+        return ModInt((self.value + value) % self.mod, self.mod)
+    def __radd__(self, other: "ModInt" | int) -> "ModInt":
         return self.__add__(other)
 
     
-    def __sub__(self, other: "Mod_int" | int) -> "Mod_int":
+    def __sub__(self, other: "ModInt" | int) -> "ModInt":
         value = self._check_value(other)
-        return Mod_int((self.value - value) % self.mod, self.mod)
-    def __rsub__(self, other: "Mod_int" | int) -> "Mod_int":
+        return ModInt((self.value - value) % self.mod, self.mod)
+    def __rsub__(self, other: "ModInt" | int) -> "ModInt":
         value = self._check_value(other)
-        return Mod_int((value - self.value) % self.mod, self.mod)
+        return ModInt((value - self.value) % self.mod, self.mod)
 
-    def __mul__(self, other: "Mod_int" | int) -> "Mod_int":
+    def __mul__(self, other: "ModInt" | int) -> "ModInt":
         value = self._check_value(other)
-        return Mod_int((self.value * value) % self.mod, self.mod)
-    def __rmul__(self, other: "Mod_int" | int) -> "Mod_int":
+        return ModInt((self.value * value) % self.mod, self.mod)
+    def __rmul__(self, other: "ModInt" | int) -> "ModInt":
         return self.__mul__(other)
 
-    def __neg__(self) -> "Mod_int":
-        return Mod_int(-self.value % self.mod, self.mod)
+    def __neg__(self) -> "ModInt":
+        return ModInt(-self.value % self.mod, self.mod)
 
-    def __pow__(self, other: int) -> "Mod_int":
-        result = Mod_int(1, self.mod)
+    def __pow__(self, other: int) -> "ModInt":
+        result = ModInt(1, self.mod)
         if other > 0:
-            base = Mod_int(self.value, self.mod)
+            base = ModInt(self.value, self.mod)
         elif other < 0:
             base = self.inverse()
             other = -other
@@ -57,11 +57,11 @@ class Mod_int:
             other //= 2
         return result
 
-    def inverse(self) -> "Mod_int":
+    def inverse(self) -> "ModInt":
         bezout = self.egcd(self.value, self.mod)
         if bezout[0] != 1:
             raise InvalidInverseError(f"Value and modul must be coprime,got {self.value} and {self.mod}")
-        return Mod_int(bezout[1], self.mod)
+        return ModInt(bezout[1], self.mod)
         
 
     @staticmethod
@@ -88,9 +88,9 @@ class Mod_int:
             y0, y1 = y1, y0 - q * y1
         return a, x0, y0
     
-    def __truediv__(self, other: "Mod_int" | int) -> "Mod_int":
+    def __truediv__(self, other: "ModInt" | int) -> "ModInt":
         val = self._check_value(other)
-        return self * Mod_int(val, self.mod).inverse()
+        return self * ModInt(val, self.mod).inverse()
 
-    def __rtruediv__(self, other: int) -> "Mod_int":
-        return Mod_int(other, self.mod) * self.inverse()
+    def __rtruediv__(self, other: int) -> "ModInt":
+        return ModInt(other, self.mod) * self.inverse()

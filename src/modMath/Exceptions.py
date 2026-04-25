@@ -12,3 +12,4 @@ class InvalidTypeOperationError(ModIntException):
 
 class InvalidInverseError(ModIntException):
     pass
+    
