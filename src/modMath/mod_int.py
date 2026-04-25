@@ -94,3 +94,13 @@ class ModInt:
 
     def __rtruediv__(self, other: int) -> "ModInt":
         return ModInt(other, self.mod) * self.inverse()
+
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, ModInt):
+            return (self.value == other.value) and (self.mod == other.mod)
+        return False
+
+    def __hash__(self) -> int:
+        return hash((self.value, self.mod))
+
+    
