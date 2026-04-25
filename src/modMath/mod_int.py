@@ -13,8 +13,8 @@ class ModInt:
     def __str__(self) -> str:
         return f"({self.value} % {self.mod})"
 
-    def __repr__(self):
-        return f"ModInt(value={self.value}, mod={self.mod})"
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}(value={self.value!r}, mod={self.mod!r})"
 
     def _check_value(self, other: "ModInt" | int) -> int:
         if isinstance(other, ModInt):
