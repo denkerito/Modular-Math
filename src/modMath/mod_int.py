@@ -115,3 +115,5 @@ class ModInt:
         value = self._check_value(other)
         return self.value < value
     
+    def __int__(self) -> int:
+        return self.value
