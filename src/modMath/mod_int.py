@@ -91,3 +91,6 @@ class Mod_int:
     def __truediv__(self, other: "Mod_int" | int) -> "Mod_int":
         value = Mod_int(self._check_value(other), other.mod)
         return Mod_int(self.value * value.inverse(), self.mod)
+
+    def __rtruediv__(self, other: int) -> "Mod_int":
+        return Mod_int(other, self.mod) * self.inverse()
