@@ -1,3 +1,5 @@
+from .Exceptions import InvalidModError, InvalidModOperationError, InvalidTypeOperationError
+
 class Mod_int:
     def __init__(self, value: int, mod: int) -> None:
         if mod <= 1:
@@ -52,5 +54,33 @@ class Mod_int:
             base = base * base
             other //= 2
         return result
+
+    def inverse(self) -> "Mod_int":
+        if gcd(self.value, self.mod) != 1:
+            
+
+    @staticmethod
+    def gcd(a: int, b: int) -> int:
+        """
+        Computes the greatest common divisor of a and b.
+        Uses the highly efficient iterative Euclidean algorithm.
+        """
+        while b:
+            a, b = b, a % b
+        return abs(a)
+
+    @staticmethod
+    def egcd(a: int, b: int) -> tuple[int, int, int]:
+        """
+        Extended Euclidean Algorithm.
+        Returns (g, x, y) such that a*x + b*y = g = gcd(a, b).
+        Crucial for calculating modular inverses.
+        """
+        x0, x1, y0, y1 = 1, 0, 0, 1
+        while b != 0:
+            q, a, b = a // b, b, a % b
+            x0, x1 = x1, x0 - q * x1
+            y0, y1 = y1, y0 - q * y1
+        return a, x0, y0
     
     
