@@ -1,4 +1,4 @@
-from .Exceptions import InvalidModError, InvalidModOperationError, InvalidTypeOperationError
+from .Exceptions import InvalidModError, InvalidModOperationError, InvalidTypeOperationError, InvalidInverseError
 
 class Mod_int:
     def __init__(self, value: int, mod: int) -> None:
@@ -47,7 +47,7 @@ class Mod_int:
         if other > 0:
             base = Mod_int(self.value, self.mod)
         elif other < 0:
-            base = Mod_int(1, self.mod) # Inverse of base, i still need to implement this
+            base = Mod_int(self.inverse(), self.mod) 
         while other > 0:
             if other % 2 == 1:
                 result = result * base
@@ -56,8 +56,11 @@ class Mod_int:
         return result
 
     def inverse(self) -> "Mod_int":
-        if gcd(self.value, self.mod) != 1:
-            
+        bezout = egcd(self.value, self.mod)
+        if bezout[0] != 1:
+            raise InvalidInverseError(f"Value and modul must be coprime,got {self.value} and {self.mod}")
+        return Mod_int(bezout[1], self.mod)
+        
 
     @staticmethod
     def gcd(a: int, b: int) -> int:
