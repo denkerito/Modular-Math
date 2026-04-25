@@ -88,4 +88,6 @@ class Mod_int:
             y0, y1 = y1, y0 - q * y1
         return a, x0, y0
     
-    
+    def __truediv__(self, other: "Mod_int" | int) -> "Mod_int":
+        value = Mod_int(self._check_value(other), other.mod)
+        return Mod_int(self.value * value.inverse(), self.mod)
