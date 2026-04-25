@@ -1,3 +1,4 @@
+from __future__ import annotations
 from .Exceptions import InvalidModError, InvalidModOperationError, InvalidTypeOperationError, InvalidInverseError
 
 class Mod_int:
@@ -47,7 +48,8 @@ class Mod_int:
         if other > 0:
             base = Mod_int(self.value, self.mod)
         elif other < 0:
-            base = Mod_int(self.inverse(), self.mod) 
+            base = self.inverse()
+            other = -other
         while other > 0:
             if other % 2 == 1:
                 result = result * base
@@ -56,7 +58,7 @@ class Mod_int:
         return result
 
     def inverse(self) -> "Mod_int":
-        bezout = egcd(self.value, self.mod)
+        bezout = self.egcd(self.value, self.mod)
         if bezout[0] != 1:
             raise InvalidInverseError(f"Value and modul must be coprime,got {self.value} and {self.mod}")
         return Mod_int(bezout[1], self.mod)
