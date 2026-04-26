@@ -3,7 +3,7 @@ name = "modmath"
 version = "0.1.0"
 description = "A library for modular arithmetic"
 authors = [
-    {name = "Dennis",email = "denni@example.com"}
+    {name = "Dennis",email = "ismajli.dennis@gmail.com"}
 ]
 readme = "README.md"
 requires-python = "^3.13"
