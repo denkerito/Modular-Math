@@ -1,8 +1,17 @@
-from fastapi import FastAPI
-from modMath import ModInt
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
+from modMath import ModInt, ModIntException
 from .schemas import *
 
 app = FastAPI(title="Modular Math API")
+
+@app.exception_handler(ModIntException)
+async def modint_exception_handler(request: Request, exc: ModIntException):
+    """Cattura tutte le eccezioni custom della libreria e restituisce un errore HTTP 400."""
+    return JSONResponse(
+        status_code=400,
+        content={"error": exc.__class__.__name__, "detail": str(exc)},
+    )
 
 @app.post("/op/add", response_model=ModMathResponse)
 def add(data: Operation):
