@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from modMath import ModInt
-from schemas import Operation
+from .schemas import Operation
 
 app = FastAPI(title="Modular Math API")
 
