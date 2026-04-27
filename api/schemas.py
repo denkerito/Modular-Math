@@ -16,3 +16,11 @@ class IntOperation(BaseModel):
 class ModMathResponse(BaseModel):
     result: int
     mod: int = Field(gt = 1)
+
+class IntResponse(BaseModel):
+    result: int
+
+class EgcdResponse(BaseModel):
+    gcd: int
+    x: int
+    y: int
