@@ -12,3 +12,7 @@ class UnaryOperation(BaseModel):
 class IntOperation(BaseModel):
     op1: int
     op2: int
+
+class ModMathResponse(BaseModel):
+    result: int
+    mod: int = Field(gt = 1)
