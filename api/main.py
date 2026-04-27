@@ -1,42 +1,49 @@
 from fastapi import FastAPI
 from modMath import ModInt
-from .schemas import Operation, UnaryOperation, IntOperation
+from .schemas import *
 
 app = FastAPI(title="Modular Math API")
 
-@app.post("/op/add")
+@app.post("/op/add", response_model=ModMathResponse)
 def add(data: Operation):
-    return ModInt(data.op1, data.mod) + data.op2
+    result = ModInt(data.op1, data.mod) + data.op2
+    return ModMathResponse(result=result.value, mod=result.mod)
 
-@app.post("/op/sub")
+@app.post("/op/sub", response_model=ModMathResponse)
 def sub(data: Operation):
-    return ModInt(data.op1, data.mod) - data.op2
+    result = ModInt(data.op1, data.mod) - data.op2
+    return ModMathResponse(result=result.value, mod=result.mod)
 
-@app.post("/op/mul")
-def sub(data: Operation):
-    return ModInt(data.op1, data.mod) * data.op2
+@app.post("/op/mul", response_model=ModMathResponse)
+def mul(data: Operation):
+    result = ModInt(data.op1, data.mod) * data.op2
+    return ModMathResponse(result=result.value, mod=result.mod)
 
-@app.post("/op/div")
+@app.post("/op/div", response_model=ModMathResponse)
 def div(data: Operation):
-    return ModInt(data.op1, data.mod) / data.op2
+    result = ModInt(data.op1, data.mod) / data.op2
+    return ModMathResponse(result=result.value, mod=result.mod)
 
-@app.post("/op/pow")
-def sub(data: Operation):
-    return ModInt(data.op1, data.mod) ** data.op2
+@app.post("/op/pow", response_model=ModMathResponse)
+def power(data: Operation):
+    result = ModInt(data.op1, data.mod) ** data.op2
+    return ModMathResponse(result=result.value, mod=result.mod)
 
-@app.post("/op/gcd")
+@app.post("/op/gcd", response_model=IntResponse)
 def gcd(data: IntOperation):
-    return {"gcd": ModInt.gcd(data.op1, data.op2)}
+    return IntResponse(result=ModInt.gcd(data.op1, data.op2))
 
-@app.post("/op/egcd")
+@app.post("/op/egcd", response_model=EgcdResponse)
 def egcd(data: IntOperation):
     values = ModInt.egcd(data.op1, data.op2)
-    return {"gcd": values[0], "x": values[1], "y": values[2]}
+    return EgcdResponse(gcd=values[0], x=values[1], y=values[2])
 
-@app.post("/op/normalize")
+@app.post("/op/normalize", response_model=ModMathResponse)
 def norm(data: UnaryOperation):
-    return ModInt(data.op1, data.mod)
+    result = ModInt(data.op1, data.mod)
+    return ModMathResponse(result=result.value, mod=result.mod)
 
-@app.post("/op/inverse")
+@app.post("/op/inverse", response_model=ModMathResponse)
 def inverse(data: UnaryOperation):
-    return ModInt(data.op1, data.mod).inverse()
+    result = ModInt(data.op1, data.mod).inverse()
+    return ModMathResponse(result=result.value, mod=result.mod)
