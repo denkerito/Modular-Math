@@ -250,3 +250,22 @@ def test_comparison_invalid_type():
     m1 = ModInt(2, 7)
     with pytest.raises(InvalidTypeOperationError):
         m1 < "string"
+
+def test_totient():
+    assert ModInt.totient(1) == 1
+    assert ModInt.totient(2) == 1
+    assert ModInt.totient(3) == 2
+    assert ModInt.totient(4) == 2
+    assert ModInt.totient(5) == 4
+    assert ModInt.totient(9) == 6
+    assert ModInt.totient(10) == 4
+    assert ModInt.totient(21) == 12
+    assert ModInt.totient(99) == 60
+    assert ModInt.totient(100) == 40
+    assert ModInt.totient(101) == 100 # Prime number
+
+def test_totient_invalid():
+    with pytest.raises(ValueError):
+        ModInt.totient(0)
+    with pytest.raises(ValueError):
+        ModInt.totient(-5)

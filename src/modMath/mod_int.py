@@ -117,3 +117,24 @@ class ModInt:
     
     def __int__(self) -> int:
         return self.value
+
+    @staticmethod
+    def totient(n: int) -> int:
+        """
+        Computes Euler's totient function phi(n).
+        Counts the positive integers up to n that are relatively prime to n.
+        Uses the optimal O(sqrt(n)) prime factorization algorithm.
+        """
+        if n <= 0:
+            raise ValueError("totient function is only defined for positive integers")
+        result = n
+        p = 2
+        while p * p <= n:
+            if n % p == 0:
+                while n % p == 0:
+                    n //= p
+                result -= result // p
+            p += 1
+        if n > 1:
+            result -= result // n
+        return result
