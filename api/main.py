@@ -14,45 +14,45 @@ async def modint_exception_handler(request: Request, exc: ModIntException):
     )
 
 @app.post("/op/add", response_model=ModMathResponse)
-async def add(data: Operation):
+def add(data: Operation):
     result = ModInt(data.op1, data.mod) + data.op2
     return ModMathResponse(result=result.value, mod=result.mod)
 
 @app.post("/op/sub", response_model=ModMathResponse)
-async def sub(data: Operation):
+def sub(data: Operation):
     result = ModInt(data.op1, data.mod) - data.op2
     return ModMathResponse(result=result.value, mod=result.mod)
 
 @app.post("/op/mul", response_model=ModMathResponse)
-async def mul(data: Operation):
+def mul(data: Operation):
     result = ModInt(data.op1, data.mod) * data.op2
     return ModMathResponse(result=result.value, mod=result.mod)
 
 @app.post("/op/div", response_model=ModMathResponse)
-async def div(data: Operation):
+def div(data: Operation):
     result = ModInt(data.op1, data.mod) / data.op2
     return ModMathResponse(result=result.value, mod=result.mod)
 
 @app.post("/op/pow", response_model=ModMathResponse)
-async def power(data: Operation):
+def power(data: Operation):
     result = ModInt(data.op1, data.mod) ** data.op2
     return ModMathResponse(result=result.value, mod=result.mod)
 
 @app.post("/op/gcd", response_model=IntResponse)
-async def gcd(data: IntOperation):
+def gcd(data: IntOperation):
     return IntResponse(result=ModInt.gcd(data.op1, data.op2))
 
 @app.post("/op/egcd", response_model=EgcdResponse)
-async def egcd(data: IntOperation):
+def egcd(data: IntOperation):
     values = ModInt.egcd(data.op1, data.op2)
     return EgcdResponse(gcd=values[0], x=values[1], y=values[2])
 
 @app.post("/op/normalize", response_model=ModMathResponse)
-async def norm(data: UnaryOperation):
+def norm(data: UnaryOperation):
     result = ModInt(data.op1, data.mod)
     return ModMathResponse(result=result.value, mod=result.mod)
 
 @app.post("/op/inverse", response_model=ModMathResponse)
-async def inverse(data: UnaryOperation):
+def inverse(data: UnaryOperation):
     result = ModInt(data.op1, data.mod).inverse()
     return ModMathResponse(result=result.value, mod=result.mod)
