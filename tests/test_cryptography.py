@@ -1,5 +1,5 @@
 import pytest
-from src.modMath import CaesarCipher
+from modMath import CaesarCipher
 
 def test_caesar_encrypt():
     cipher = CaesarCipher(3)
