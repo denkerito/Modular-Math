@@ -1,6 +1,6 @@
 import pytest
-from src.modMath.mod_int import ModInt
-from src.modMath.exceptions import (
+from modMath.mod_int import ModInt
+from modMath.exceptions import (
     InvalidModError,
     InvalidModOperationError,
     InvalidTypeOperationError,
