@@ -24,3 +24,30 @@ class EgcdResponse(BaseModel):
     gcd: int
     x: int
     y: int
+
+class CipherResponse(BaseModel):
+    result: str
+
+class CaesarRequest(BaseModel):
+    text: str
+    key: int
+    alphabet: str | None = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+class AffineRequest(BaseModel):
+    text: str
+    a: int
+    b: int
+    alphabet: str | None = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+class VigenereRequest(BaseModel):
+    text: str
+    keyword: str
+    alphabet: str | None = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+class CRTRequest(BaseModel):
+    remainders: list[int]
+    moduli: list[int]
+
+class CRTResponse(BaseModel):
+    result: int
+    modulus: int
