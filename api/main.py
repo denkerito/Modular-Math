@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
-from modMath import ModInt, ModIntException
+from functools import reduce
+import operator
+from modMath import ModInt, ModIntException, CaesarCipher, AffineCipher, VigenereCipher, chinese_remainder_theorem
 from .schemas import *
 
 app = FastAPI(title="Modular Math API")
@@ -11,6 +13,14 @@ async def modint_exception_handler(request: Request, exc: ModIntException):
     return JSONResponse(
         status_code=400,
         content={"error": exc.__class__.__name__, "detail": str(exc)},
+    )
+
+@app.exception_handler(ValueError)
+async def value_error_handler(request: Request, exc: ValueError):
+    """Cattura gli errori di validazione (es. chiavi cifrario non valide) e restituisce 400."""
+    return JSONResponse(
+        status_code=400,
+        content={"error": "ValidationError", "detail": str(exc)},
     )
 
 @app.post("/op/add", response_model=ModMathResponse)
@@ -56,3 +66,43 @@ def norm(data: UnaryOperation):
 def inverse(data: UnaryOperation):
     result = ModInt(data.op1, data.mod).inverse()
     return ModMathResponse(result=result.value, mod=result.mod)
+
+# --- Cryptography Endpoints ---
+
+@app.post("/crypto/caesar/encrypt", response_model=CipherResponse)
+def caesar_encrypt(data: CaesarRequest):
+    cipher = CaesarCipher(data.key, data.alphabet)
+    return CipherResponse(result=cipher.encrypt(data.text))
+
+@app.post("/crypto/caesar/decrypt", response_model=CipherResponse)
+def caesar_decrypt(data: CaesarRequest):
+    cipher = CaesarCipher(data.key, data.alphabet)
+    return CipherResponse(result=cipher.decrypt(data.text))
+
+@app.post("/crypto/affine/encrypt", response_model=CipherResponse)
+def affine_encrypt(data: AffineRequest):
+    cipher = AffineCipher(data.a, data.b, data.alphabet)
+    return CipherResponse(result=cipher.encrypt(data.text))
+
+@app.post("/crypto/affine/decrypt", response_model=CipherResponse)
+def affine_decrypt(data: AffineRequest):
+    cipher = AffineCipher(data.a, data.b, data.alphabet)
+    return CipherResponse(result=cipher.decrypt(data.text))
+
+@app.post("/crypto/vigenere/encrypt", response_model=CipherResponse)
+def vigenere_encrypt(data: VigenereRequest):
+    cipher = VigenereCipher(data.keyword, data.alphabet)
+    return CipherResponse(result=cipher.encrypt(data.text))
+
+@app.post("/crypto/vigenere/decrypt", response_model=CipherResponse)
+def vigenere_decrypt(data: VigenereRequest):
+    cipher = VigenereCipher(data.keyword, data.alphabet)
+    return CipherResponse(result=cipher.decrypt(data.text))
+
+# --- Number Theory Endpoints ---
+
+@app.post("/op/crt", response_model=CRTResponse)
+def crt(data: CRTRequest):
+    result = chinese_remainder_theorem(data.remainders, data.moduli)
+    modulus = reduce(operator.mul, data.moduli, 1)
+    return CRTResponse(result=result, modulus=modulus)
