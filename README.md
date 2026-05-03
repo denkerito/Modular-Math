@@ -1,7 +1,7 @@
 # 🛡️ modMath: High-Performance Modular Arithmetic & Cryptographic Suite
 
 [![Python Version](https://img.shields.io/badge/python-3.13%2B-blue.svg)](https://www.python.org/)
-[![CI/CD Pipeline](https://github.com/yourusername/modMath/actions/workflows/pytest.yml/badge.svg)](https://github.com/yourusername/modMath/actions)
+[![CI/CD Pipeline](https://github.com/denkerito/Modular-Math/actions/workflows/pytest.yml/badge.svg)](https://github.com/denkerito/Modular-Math/actions)
 [![FastAPI](https://img.shields.io/badge/API-FastAPI-009688.svg)](https://fastapi.tiangolo.com/)
 [![Poetry](https://img.shields.io/badge/Package%20Manager-Poetry-60A5FA.svg)](https://python-poetry.org/)
 
