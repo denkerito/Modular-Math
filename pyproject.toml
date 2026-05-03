@@ -13,9 +13,11 @@ dependencies = [
     "pydantic (>=2.13.3,<3.0.0)"
 ]
 
+[tool.poetry]
+packages = [{include = "modMath", from = "src"}]
+
 [tool.poetry.group.dev.dependencies]
 pytest = ">=9.0.3,<10.0.0"
-
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
